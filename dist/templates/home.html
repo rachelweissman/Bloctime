@@ -7,9 +7,16 @@
 </section> -->
 <!-- <section class = "container"> -->
 <section>
-<div ng-controller="CountdownTimerController" class="timer">
-  <h1 ng-bind="counter | timeCode"></h1>
-  <button ng-show="!isTimerRunning" ng-click="startTimer()">Start</button>
-  <button ng-show="isTimerRunning" ng-click="stopTimer()">Stop</button>
-</div>
+  <div ng-controller="CountdownTimerController" class="timer">
+    <h1 ng-bind="counter | timeCode"></h1>
+    <div ng-show="!isTimerRunning && !breakTime">
+      <button ng-click="startTimer()">Start</button>
+    </div>
+    <div ng-show="isTimerRunning">
+      <button ng-click="resetTimer()">Reset</button>
+    </div>
+    <div ng-show="breakTime && !isTimerRunning">
+      <button ng-click="startTimer()">Break</button>
+    </div>
+  </div>
 </section>
