@@ -1,11 +1,20 @@
+var blocTimeModule = angular.module('blocTimeModule', ['ui.router', 'firebase']);
+
 //variables for full time, short break, and long break -- global
 
-var workTimer = 1500;
-var shortBreak = 300;
-var longBreak = 1800;
+//real times
+// var workTimer = 1500;
+// var shortBreak = 300;
+// var longBreak = 1800;
 
+//smaller times used for testing
+var workTimer = 15;
+var shortBreak = 3;
+var longBreak = 18;
 
-var blocTimeModule = angular.module('blocTimeModule', ['ui.router']);
+var timerDing = new buzz.sound( "/assets/sounds/Ding.mp3", {
+  preload: true
+});
 
 blocTimeModule.config(function($stateProvider, $urlRouterProvider, $locationProvider){
 
@@ -76,8 +85,10 @@ blocTimeModule.controller("CountdownTimerController", [
 
       pomodorGo = $interval(function() {
         $scope.counter--;
+        console.log("interval");
         if ($scope.counter == 0) {
           $interval.cancel(pomodorGo);
+          timerDing.play();
           $scope.isTimerRunning = false;
 
           if (!$scope.breakTime) {
