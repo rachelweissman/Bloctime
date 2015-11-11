@@ -67,85 +67,72 @@ blocTimeModule.controller("CountdownTimerController", [
     var pomodoros = 0;
     var pomodoroGo;
 
-    $scope.startTimer = function () {
-          $scope.isTimerRunning = true;
+    $scope.startTimer = function() {
+      $scope.isTimerRunning = true;
 
-          if (!$scope.counter) {
+      if (!$scope.counter) {
+        $scope.counter = workTimer;
+      }
+
+      pomodorGo = $interval(function() {
+        $scope.counter--;
+        if ($scope.counter == 0) {
+          $interval.cancel(pomodorGo);
+          $scope.isTimerRunning = false;
+
+          if (!$scope.breakTime) {
+            pomodoros++;
+            console.log(pomodoros);
+            $scope.breakTime = true;
+
+            if (pomodoros % 4 === 0) {
+              $scope.counter = longBreak;
+              $scope.isTimerRunning = false;
+            } else {
+              $scope.counter = shortBreak;
+              $scope.isTimerRunning = false;
+            }
+          } else {
+            console.log("back to work");
+            $scope.breakTime = false;
             $scope.counter = workTimer;
           }
-
-          pomodorGo = $interval(function() {
-            $scope.counter--;
-            if ($scope.counter == 0) {
-              $interval.cancel(pomodorGo);
-              $scope.isTimerRunning = false;
-
-              if (!$scope.breakTime) {
-                pomodoros++;
-                console.log(pomodoros);
-                $scope.breakTime = true;
-
-                if (pomodoros % 4 === 0) {
-                  $scope.counter = longBreak;
-                  $scope.isTimerRunning = false;
-                } else {
-                  $scope.counter = shortBreak;
-                  $scope.isTimerRunning = false;
-                }
-              } else {
-                console.log("back to work");
-                $scope.breakTime = false;
-                $scope.counter = workTimer;
-              }
-            }
-          }, 1000);
+        }
+      }, 1000);
     };
-
     $scope.resetTimer = function() {
-    $interval.cancel(pomodorGo);
-    $scope.counter = workTimer;
-    $scope.isTimerRunning = false;
+      $interval.cancel(pomodorGo);
+      $scope.counter = workTimer;
+      $scope.isTimerRunning = false;
+    }
   }
-
-
-    // $scope.stopTimer = function() {
-    //   $interval.cancel(stop);
-    //   $scope.counter = 1500;
-    //   this.isTimerRunning = false;
-    // }
-
-    // $scope.timeRemaining = 100;
-
-    // $interval(function() {
-    //   $log.debug("interval fired!");
-    //   $scope.timeRemaining -= 1;
-    // }, 1000);
-
-//     $scope.stop = function() {
-//       alert("you clicked stop!");
-//     };
-   }
 ]);
 
-blocTimeModule.filter('timeCode', function(){
+
+//timer cannot pause, it can only reset
+//button can start or reset timer with ngClick
+blocTimeModule.filter('timeCode', function() {
   return function(seconds) {
     seconds = Number.parseFloat(seconds);
-//not sure about isNAN
-//return when no time is provided
-    // if(Number.isNAN(seconds)){
+
+    //return when no time is provided
+    // if (Number.isNAN(seconds)) {
     //   return '--:--';
     // }
+    //make whole number
     var wholeSeconds = Math.floor(seconds);
+
     var minutes = Math.floor(wholeSeconds / 60);
 
     remainingSeconds = wholeSeconds % 60;
 
     var output = minutes + ':';
 
-    if(remainingSeconds < 10) {
+    if (remainingSeconds < 10) {
       output += '0';
     }
     output += remainingSeconds;
     return output;
+
   }
 });
