@@ -116,9 +116,9 @@ blocTimeModule.filter('timeCode', function() {
     seconds = Number.parseFloat(seconds);
 
     //return when no time is provided
-    // if (Number.isNAN(seconds)) {
-    //   return '--:--';
-    // }
+    if (Number.isNaN(seconds)) {
+      return '25:00';
+    }
     //make whole number
     var wholeSeconds = Math.floor(seconds);
 
@@ -133,6 +133,5 @@ blocTimeModule.filter('timeCode', function() {
     }
     output += remainingSeconds;
     return output;
-
   }
 });
