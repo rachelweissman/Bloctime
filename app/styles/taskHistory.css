@@ -1,0 +1,63 @@
+body.taskhistory {
+    width: 100%;
+    height: auto;
+    background-image: url(../assets/images/backgroundBlur.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.taskhistory h2 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  color: #fff;
+  font-size: 4em ;
+  width: 100%;
+  text-align: center;
+  text-shadow: 1px 1px 0px rgb(58,23,63);
+  padding-top: 1em;
+  margin-bottom: .25em;
+}
+
+.taskhistory button {
+  font-size: 1em;
+  width: 20%;
+  padding: 2%;
+  margin-top: 1rem;
+  color: #FFF;
+  background-color: #E55E4B;
+  position: relative;
+  top: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  text-transform: uppercase;
+  vertical-align: middle;
+  border-radius: 20%;
+}
+
+.taskhistory input {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  color: #fff;
+  font-size: 1em ;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  position: relative;
+  width: 50%;
+  padding: .5rem;
+  /*opacity: 0.3;*/
+  background-color: rgba(255,255,255,0.1);
+  border: .1rem solid #FFF;
+  display: block;
+}
+
+.tasks li {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  color: #fff;
+  font-size: 1em ;
+  text-align: left;
+}

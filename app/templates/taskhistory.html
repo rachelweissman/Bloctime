@@ -1,0 +1,16 @@
+<section>
+  <div ng-controller="taskHistoryController" class="taskhistory">
+    <h2>Task History</h2>
+    <input type="text" ng-model="task">
+    <button ng-click="addTask()">Add Task</button>
+    <div class="tasks">
+      <ul>
+        <li ng-repeat="task in tasks">
+          {{task.task}}
+          <br> {{task.completed | date: 'medium'}}
+        </li>
+        <ul>
+          <!-- <button ng-click="clearTasks()">Clear List</button> -->
+    </div>
+  </div>
+</section>

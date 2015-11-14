@@ -23,27 +23,76 @@ blocTimeModule.config(function($stateProvider, $urlRouterProvider, $locationProv
     requireBase: false
   });
 
+//angular ui state change success
+//$rootScope.$on
+
   $urlRouterProvider.otherwise('/home');
 
   $stateProvider
+  .state('root', {
+  url: '/',
+  controller: 'homeController',
+  templateUrl: '/templates/home.html'
+  })
   .state('home', {
     url: '/home',
     controller: 'homeController',
     templateUrl: '/templates/home.html'
+  })
+  .state('taskhistory', {
+    url: '/taskhistory',
+    controller: 'taskHistoryController',
+    templateUrl: '/templates/taskhistory.html'
   });
 });
 
 blocTimeModule.controller("ApplicationController", [
   "$log",
   "$rootScope",
-  function($log, $rootScope) {
+  "Tasks",
+  function($log, $rootScope, Tasks) {
     $log.debug("ApplicationController");
+
+//state change start
 
     $rootScope.user = {
       "first_name": "Ryan",
     };
 
     $log.info("Current user: ", $rootScope.user);
+  }
+]);
+
+blocTimeModule.controller('taskHistoryController', [
+  '$scope',
+  'Tasks',
+  // '$fireBaseObject',
+  // '$interval',
+  function($scope, Tasks) {
+
+    // var ref = new Firebase ("https://blinding-torch-8353.firebaseio.com");
+
+    //download the data into a local object
+    // $scope.data = $fireBaseObject(ref);
+
+    //synchronize the object with a three-way data blinding
+    //click on 'index.html' above to see it used in the DOM
+    // syncObject.$bindTo($scope, "data");
+
+    //create a synchronized array
+    //click
+
+    $scope.tasks = Tasks.all;
+
+    $scope.addTask = function () {
+        Tasks.all.$add({
+          task: $scope.task,
+          completed: Date.now()
+        });
+
+        $scope.task = null;
+
+      };
   }
 ]);
 
@@ -66,22 +115,29 @@ blocTimeModule.controller("CountdownTimerController", [
   "$log",
   "$scope",
   '$interval',
+  // 'Tasks',
   function($log, $scope, $interval) {
     $log.debug("CountdownTimerController");
-    // $scope.counter = 1500;
-    // var stop;
-    // var isTimerRunning = false;
+
+    $scope.counter = workTimer;
     $scope.isTimerRunning = false;
     $scope.breakTime = false;
     var pomodoros = 0;
     var pomodoroGo;
 
+    // $scope.tasks = Tasks.all;
+    //
+    // $scope.addTask = function(){
+    //   Tasks.all$add({
+    //     task: $scope.task,
+    //     completed: Date.now()
+    //   });
+    //   $scope.task = null;
+    // }
+
     $scope.startTimer = function() {
       $scope.isTimerRunning = true;
 
-      if (!$scope.counter) {
-        $scope.counter = workTimer;
-      }
 
       pomodorGo = $interval(function() {
         $scope.counter--;
@@ -126,10 +182,6 @@ blocTimeModule.filter('timeCode', function() {
   return function(seconds) {
     seconds = Number.parseFloat(seconds);
 
-    //return when no time is provided
-    if (Number.isNaN(seconds)) {
-      return '25:00';
-    }
     //make whole number
     var wholeSeconds = Math.floor(seconds);
 
@@ -146,3 +198,21 @@ blocTimeModule.filter('timeCode', function() {
     return output;
   }
 });
+
+blocTimeModule.factory('Tasks', [
+  '$firebaseArray',
+  function($firebaseArray) {
+    var ref = new Firebase("https://blazing-fire-1424.firebaseio.com");
+
+    //create an AngularFire reference to the data
+    var tasks = $firebaseArray(ref);
+
+    // function clearData() {
+    //   ref.remove();
+    // }
+    return {
+      all: tasks
+      // clearData: clearData
+    }
+  }
+]);
