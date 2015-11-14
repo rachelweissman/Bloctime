@@ -5,12 +5,12 @@
     <button ng-click="addTask()">Add Task</button>
     <div class="tasks">
       <ul>
-        <li ng-repeat="task in tasks">
+        <li ng-repeat="task in tasks | orderBy : ' -completed'">
           {{task.task}}
           <br> {{task.completed | date: 'medium'}}
         </li>
         <ul>
-          <!-- <button ng-click="clearTasks()">Clear List</button> -->
+          <button ng-click="clearTasks()">Clear List</button>
     </div>
   </div>
 </section>

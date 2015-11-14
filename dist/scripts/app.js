@@ -93,6 +93,10 @@ blocTimeModule.controller('taskHistoryController', [
         $scope.task = null;
 
       };
+
+      $scope.clearTasks = function () {
+        Tasks.clearTasks();
+      };
   }
 ]);
 
@@ -115,7 +119,6 @@ blocTimeModule.controller("CountdownTimerController", [
   "$log",
   "$scope",
   '$interval',
-  // 'Tasks',
   function($log, $scope, $interval) {
     $log.debug("CountdownTimerController");
 
@@ -124,16 +127,6 @@ blocTimeModule.controller("CountdownTimerController", [
     $scope.breakTime = false;
     var pomodoros = 0;
     var pomodoroGo;
-
-    // $scope.tasks = Tasks.all;
-    //
-    // $scope.addTask = function(){
-    //   Tasks.all$add({
-    //     task: $scope.task,
-    //     completed: Date.now()
-    //   });
-    //   $scope.task = null;
-    // }
 
     $scope.startTimer = function() {
       $scope.isTimerRunning = true;
@@ -207,12 +200,13 @@ blocTimeModule.factory('Tasks', [
     //create an AngularFire reference to the data
     var tasks = $firebaseArray(ref);
 
-    // function clearData() {
-    //   ref.remove();
-    // }
+    function clearTasks() {
+      ref.remove();
+    };
+
     return {
-      all: tasks
-      // clearData: clearData
+      all: tasks,
+      clearTasks: clearTasks
     }
   }
 ]);
